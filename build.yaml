@@ -1,0 +1,9 @@
+# Tên duy nhất cho bản build, bạn có thể đặt bất kỳ
+include:
+  - name: custom-filco-build
+    # Định nghĩa danh sách các bản build cần tạo
+    build:
+      # Mỗi mục - board: là một bản build firmware
+      - board: nice_nano_v2
+        # Tên shield (lớp áo) bạn đã tạo, phải khớp với tên thư mục
+        shield: filco_tkl_wireless
