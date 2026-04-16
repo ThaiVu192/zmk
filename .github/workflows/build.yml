@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: zmkfirmware/zmk-build:latest
+      image: ghcr.io/zmkfirmware/zmk-build-ts:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
