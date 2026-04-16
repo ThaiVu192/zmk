@@ -5,40 +5,11 @@ on:
     paths:
       - 'boards/**'
       - 'config/**'
+      - 'build.yaml'
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: docker.io/zmkfirmware/zmk-build-arm:4.1
-    strategy:
-      matrix:
-        board: [nice_nano_v2]
-        shield: [filco_tkl_wireless]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Cache west modules
-        uses: actions/cache@v5
-        with:
-          path: |
-            modules/
-            tools/
-            zephyr/
-            bootloader/
-          key: ${{ runner.os }}-build-${{ hashFiles('app/west.yml') }}
-      - name: Initialize workspace
-        run: west init -l app
-      - name: Update modules
-        run: west update --fetch-opt=--filter=tree:0
-      - name: Export Zephyr CMake package
-        run: west zephyr-export
-      - name: Build firmware
-        run: |
-          west build -s app -p -b ${{ matrix.board }} -- -DSHIELD=${{ matrix.shield }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware-${{ matrix.board }}-${{ matrix.shield }}
-          path: build/zephyr/zmk.uf2
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+    with:
+      zephyr_config: config
