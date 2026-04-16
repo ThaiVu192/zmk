@@ -9,23 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/zmkfirmware/zmk-build-ts:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Initialize west workspace
-        run: |
-          west init -l app/
-          west update
-
       - name: Build firmware
-        run: |
-          west build -d build -b nice_nano_v2 -- -DSHIELD=filco_tkl_wireless
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: zmkfirmware/zmk-build-action@v3
         with:
-          name: firmware
-          path: build/zephyr/zmk.uf2
+          board: nice_nano_v2
+          shield: filco_tkl_wireless
