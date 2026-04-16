@@ -1,15 +1,48 @@
-name: Build ZMK Firmware
+name: Build Firmware
 
 on:
   push:
-    paths:
-      - 'boards/**'
-      - 'config/**'
-      - 'build.yaml'
-  workflow_dispatch:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:   # cho phép chạy thủ công từ GitHub UI
 
 jobs:
   build:
-    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
-    with:
-      config_dir: config
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/zmkfirmware/zmk-build-arm:4.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cache west modules
+        uses: actions/cache@v5
+        with:
+          path: |
+            modules/
+            tools/
+            zephyr/
+            bootloader/
+          key: ${{ runner.os }}-zmk-cache-${{ hashFiles('app/west.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-zmk-cache-
+
+      - name: West init
+        run: west init -l app
+
+      - name: West update
+        run: west update --fetch-opt=--filter=tree:0
+
+      - name: West zephyr-export
+        run: west zephyr-export
+
+      - name: Build nice_nano_v2 with filco_tkl_wireless
+        run: |
+          west build -s app -p -b nice_nano_v2 -- -DSHIELD="filco_tkl_wireless"
+
+      - name: Upload UF2 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nice_nano_v2-filco_tkl_wireless
+          path: build/zephyr/zmk.uf2
