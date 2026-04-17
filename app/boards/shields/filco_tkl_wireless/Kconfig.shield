@@ -1,2 +1,3 @@
 config SHIELD_FILCO_TKL_WIRELESS
-    def_bool $(shields_list_contains,filco_tkl_wireless)
+    def_bool y
+    select ZMK_KEYBOARD
