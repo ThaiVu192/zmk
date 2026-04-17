@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_FILCO_TKL_WIRELESS
+
+config ZMK_KEYBOARD_NAME
+    default "Filco TKL Wireless"
+
+config ZMK_USB
+    def_bool y
+
+config ZMK_BLE
+    def_bool y
+
+config ZMK_HID_INDICATORS
+    def_bool y
+
+config I2C
+    def_bool y
+
+endif

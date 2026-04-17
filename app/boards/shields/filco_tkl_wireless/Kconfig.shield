@@ -1,2 +1,5 @@
+# Copyright (c) 2026 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
 config SHIELD_FILCO_TKL_WIRELESS
     def_bool $(shields_list_contains,filco_tkl_wireless)
