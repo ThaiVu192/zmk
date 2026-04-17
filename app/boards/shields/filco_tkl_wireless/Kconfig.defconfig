@@ -4,7 +4,7 @@
 if SHIELD_FILCO_TKL_WIRELESS
 
 config ZMK_KEYBOARD_NAME
-    default "Filco TKL Wireless"
+    default "Filco TKL"
 
 config ZMK_USB
     def_bool y
